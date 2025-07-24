@@ -6,33 +6,6 @@
     <title>axiTrust Ideathon Voting</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
-/* --- Styling for the Rules Banner --- */
-    .rules-banner {
-        background-color: var(--card-bg);
-        padding: 20px;
-        border-radius: var(--border-radius);
-        box-shadow: var(--box-shadow);
-        margin: -15px auto 30px auto; /* Pulls it up slightly and adds space below */
-        max-width: 840px;
-        text-align: center;
-}
-    .rules-container {
-        display: flex;
-        justify-content: space-around;
-        align-items: center;
-        flex-wrap: wrap; /* Allows wrapping on smaller screens */
-        gap: 15px;
-        margin-top: 10px;
-}
-    .rule-item {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        font-weight: 600;
-}
-    .rule-item span {
-        color: var(--primary-green);
-}
     :root {
         --primary-green: #16a085;
         --accent-pink: #f57d9d;
@@ -60,6 +33,30 @@
     }
     .header h1 { margin: 0; }
     .header p { margin: 5px 0 0; opacity: 0.9; }
+    .rules-banner {
+        background-color: var(--card-bg);
+        padding: 20px;
+        border-radius: var(--border-radius);
+        box-shadow: var(--box-shadow);
+        margin: -15px auto 30px auto;
+        max-width: 840px;
+        text-align: center;
+    }
+    .rules-container {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 15px;
+        margin-top: 10px;
+    }
+    .rule-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-weight: 600;
+    }
+    .rule-item span { color: var(--primary-green); }
     .form-wrapper {
         padding: 30px 20px;
         display: flex;
@@ -91,7 +88,7 @@
         border-top: 1px solid var(--light-grey);
         padding-top: 20px;
         margin-top: 20px;
-        min-height: 100px; /* For loading state */
+        min-height: 100px;
     }
     .option-item {
         display: flex;
@@ -136,10 +133,11 @@
 </head>
 <body>
 
-    <div class="header">
+    <header class="header">
         <h1>Ideathon Automating axiTrust</h1>
         <p>Allocate $10 across exactly 3 options (max $5 per option)</p>
-    </div>
+    </header>
+
     <div class="rules-banner">
         <h4>How to Vote</h4>
         <div class="rules-container">
@@ -148,6 +146,7 @@
             <div class="rule-item">✋ <span>Max $5 per idea</span></div>
         </div>
     </div>
+
     <div class="form-wrapper">
         <form id="votingForm" action="https://formspree.io/f/xwpqljvn" method="POST">
             
@@ -174,19 +173,18 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // --- START: PASTE YOUR AIRTABLE INFO HERE ---
-        const AIRTABLE_PAT_KEY = 'patlxirSJVruAxINY.260aff8049b488866cf0a10b4d520222ac3f33a447e067d21084f605c1019411'; // Starts with 'pat...'
-        const AIRTABLE_BASE_ID = 'appHlXN2Hng7Zhh40'; // Starts with 'app...'
-        const AIRTABLE_TABLE_NAME = 'Table 1'; // This is the default name. Change it if you renamed your table in Airtable.
-        // --- END: PASTE YOUR AIRTABLE INFO HERE ---
+        // --- START: YOUR AIRTABLE INFO ---
+        const AIRTABLE_PAT_KEY = 'patlxirSJVruAxINY.260aff8049b488866cf0a10b4d520222ac3f33a447e067d21084f605c1019411';
+        const AIRTABLE_BASE_ID = 'appHlXN2Hng7Zhh40';
+        const AIRTABLE_TABLE_NAME = 'Table 1';
+        // --- END: YOUR AIRTABLE INFO ---
 
         const optionsGrid = document.getElementById('options-grid-container');
         const loadingMessage = document.getElementById('loading-message');
         const submitBtn = document.getElementById('submit-btn');
         const statusMessageEl = document.getElementById('status-message');
         
-        // This is the API URL. It filters for records where the 'Status' is 'Approved'.
-        const fetchURL = `https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/${encodeURIComponent(AIRTABLE_TABLE_NAME)}?filterByFormula={Status}='Approved'`;
+        const fetchURL = `https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/${encodeURIComponent(AIRTABLE_TABLE_NAME)}`;
 
         async function fetchIdeas() {
             try {
@@ -201,12 +199,17 @@
                 }
 
                 const data = await response.json();
-                loadingMessage.style.display = 'none'; // Hide loading message
                 
-                // For each idea fetched from Airtable, create the HTML
+                if (data.records.length === 0) {
+                    loadingMessage.textContent = 'No ideas have been submitted yet.';
+                    return;
+                }
+
+                loadingMessage.style.display = 'none';
+                
                 data.records.forEach((record, index) => {
                     const ideaId = index + 1;
-                    const problem = record.fields['Problem Statement'] || 'No problem statement';
+                    const problem = record.fields['Problem Statement'] || 'No problem statement provided';
                     
                     const optionDiv = document.createElement('div');
                     optionDiv.className = 'option-item';
@@ -217,7 +220,6 @@
                     optionsGrid.appendChild(optionDiv);
                 });
 
-                // After creating the options, attach the validation logic
                 setupValidation();
 
             } catch (error) {
@@ -266,10 +268,10 @@
             optionInputs.forEach(input => {
                 input.addEventListener('input', validateRules);
             });
-            validateRules(); // Initial check
+            validateRules();
         }
         
-        fetchIdeas(); // Start the process
+        fetchIdeas();
     });
 </script>
 
