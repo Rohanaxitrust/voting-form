@@ -4,414 +4,232 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>axiTrust Ideathon Voting</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
-        /* --- Google Font Import --- */
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+    /* --- CSS Variables (from your flyer) --- */
+    :root {
+        --primary-green: #16a085;
+        --accent-pink: #f57d9d;
+        --light-text: #ffffff;
+        --dark-text: #333333;
+        --light-grey: #ecf0f1;
+        --card-bg: #ffffff;
+        --error-red: #c0392b;
+        --border-radius: 12px;
+        --box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
 
-        /* --- CSS Variables (from your flyer) --- */
-        :root {
-            --primary-green: #16a085; /* A vibrant teal/green */
-            --accent-pink: #f57d9d; /* A celebratory pink */
-            --highlight-gold: #f1c40f;
-            --light-text: #ffffff;
-            --dark-text: #333333;
-            --light-grey: #ecf0f1;
-            --card-bg: #ffffff;
-            --border-radius: 12px;
-            --box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-        }
+    /* --- General Body Styles --- */
+    body {
+        font-family: 'Poppins', sans-serif;
+        background-color: var(--light-grey);
+        color: var(--dark-text);
+        margin: 0;
+        padding: 0;
+    }
 
-        /* --- General Body Styles --- */
-        body {
-            font-family: 'Poppins', sans-serif;
-            background-color: var(--light-grey);
-            color: var(--dark-text);
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
+    /* --- Header Styling --- */
+    .header {
+        background-color: var(--accent-pink);
+        color: var(--light-text);
+        padding: 20px;
+        text-align: center;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    .header h1 {
+        margin: 0;
+    }
+    .header p {
+        margin: 5px 0 0;
+        opacity: 0.9;
+    }
 
-        /* --- Header & Introduction --- */
-        .page-header {
-            background-color: var(--accent-pink);
-            color: var(--light-text);
-            width: 100%;
-            text-align: center;
-            padding: 20px 0;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
+    /* --- Form Container --- */
+    .form-wrapper {
+        padding: 30px 20px;
+        display: flex;
+        justify-content: center;
+    }
 
-        .page-header h1 {
-            margin: 0;
-            font-size: 2.5em;
-        }
+    form {
+        background-color: var(--card-bg);
+        padding: 30px;
+        border-radius: var(--border-radius);
+        box-shadow: var(--box-shadow);
+        max-width: 700px;
+        width: 100%;
+    }
 
-        .page-header p {
-            margin: 5px 0 0;
-            font-size: 1.2em;
-            opacity: 0.9;
-        }
+    /* --- Styling for Input Fields --- */
+    .input-group {
+        margin-bottom: 20px;
+    }
+    .input-group label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 600;
+    }
+    .styled-input {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        font-family: 'Poppins', sans-serif;
+        font-size: 1em;
+        box-sizing: border-box; /* Important */
+    }
 
-        /* --- Main Content Container --- */
-        .container {
-            max-width: 900px;
-            width: 100%;
-            padding: 20px;
-            box-sizing: border-box;
-        }
+    /* --- Grid for the Options --- */
+    .options-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 20px;
+        border-top: 1px solid var(--light-grey);
+        padding-top: 20px;
+        margin-top: 20px;
+    }
+    .option-item {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+    .option-item label {
+        font-weight: 600;
+        margin-bottom: 0;
+    }
+    .option-item input {
+        width: 80px; /* Smaller width for number inputs */
+    }
 
-        /* --- Rules Section --- */
-        .rules {
-            background-color: var(--card-bg);
-            padding: 20px;
-            border-radius: var(--border-radius);
-            box-shadow: var(--box-shadow);
-            margin-bottom: 30px;
-            text-align: center;
-        }
-
-        .rules h3 {
-            margin-top: 0;
-        }
-        
-        .rules ul {
-            list-style: none;
-            padding: 0;
-            display: flex;
-            justify-content: space-around;
-            margin-top: 15px;
-        }
-        
-        .rules li {
-            font-weight: 600;
-            color: var(--primary-green);
-        }
-
-        /* --- The Form --- */
-        .voting-form {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-
-        .user-details {
-            background-color: var(--card-bg);
-            padding: 25px;
-            border-radius: var(--border-radius);
-            box-shadow: var(--box-shadow);
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-        }
-
-        .user-details div {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .user-details label {
-            margin-bottom: 8px;
-            font-weight: 600;
-        }
-
-        .user-details input {
-            padding: 12px;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            font-family: 'Poppins', sans-serif;
-            font-size: 1em;
-        }
-
-        /* --- Idea Cards --- */
-        .ideas-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 20px;
-        }
-
-        .idea-card {
-            background-color: var(--card-bg);
-            border-radius: var(--border-radius);
-            box-shadow: var(--box-shadow);
-            padding: 20px;
-            border: 3px solid transparent;
-            transition: border-color 0.3s;
-        }
-
-        .idea-card.selected {
-            border-color: var(--highlight-gold);
-        }
-
-        .idea-card h4 {
-            margin-top: 0;
-            color: var(--primary-green);
-        }
-        
-        .idea-card .description p {
-            font-size: 0.9em;
-            line-height: 1.6;
-        }
-        
-        .idea-card .description strong {
-            display: block;
-            margin-top: 10px;
-        }
-
-        /* --- Voting Controls (Stepper) --- */
-        .vote-control {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-top: 20px;
-            gap: 15px;
-        }
-
-        .vote-control button {
-            background-color: var(--primary-green);
-            color: var(--light-text);
-            border: none;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            font-size: 1.8em;
-            font-weight: bold;
-            cursor: pointer;
-            line-height: 40px;
-            transition: background-color 0.2s;
-        }
-        
-        .vote-control button:hover {
-            background-color: #117a65;
-        }
-
-        .vote-amount {
-            font-size: 1.5em;
-            font-weight: 700;
-            min-width: 60px;
-            text-align: center;
-        }
-
-        /* --- Sticky Tracker Bar --- */
-        .tracker-bar {
-            position: sticky;
-            bottom: 0;
-            background-color: var(--dark-text);
-            color: var(--light-text);
-            padding: 15px;
-            width: 100%;
-            box-shadow: 0 -5px 15px rgba(0,0,0,0.2);
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            z-index: 1000;
-            box-sizing: border-box;
-        }
-
-        .tracker-item {
-            text-align: center;
-        }
-        
-        .tracker-item .value {
-            font-size: 1.5em;
-            font-weight: 700;
-        }
-
-        /* --- Submit Button --- */
-        #submit-btn {
-            padding: 15px 30px;
-            font-size: 1.2em;
-            font-weight: 700;
-            font-family: 'Poppins', sans-serif;
-            background-color: var(--highlight-gold);
-            color: var(--dark-text);
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        
-        #submit-btn:disabled {
-            background-color: #bdc3c7;
-            cursor: not-allowed;
-            opacity: 0.7;
-        }
-
+    /* --- Submit Button --- */
+    .submit-button {
+        background-color: var(--primary-green);
+        color: var(--light-text);
+        border: none;
+        padding: 15px 30px;
+        font-size: 1.2em;
+        font-weight: 700;
+        border-radius: 8px;
+        cursor: pointer;
+        display: block;
+        width: 100%;
+        margin-top: 30px;
+        transition: all 0.2s;
+    }
+    .submit-button:hover {
+        background-color: #117a65;
+    }
+    .submit-button:disabled {
+        background-color: #bdc3c7;
+        cursor: not-allowed;
+    }
+    
+    /* --- Status Message Styling --- */
+    .status-message {
+        text-align: center;
+        font-weight: 600;
+        margin-top: 20px;
+        padding: 10px;
+        border-radius: 8px;
+        min-height: 24px;
+        color: var(--error-red);
+    }
+    .status-message.success {
+        color: var(--primary-green);
+    }
     </style>
 </head>
 <body>
 
-    <header class="page-header">
-        <h1>Ideathon: Automating axiTrust</h1>
-        <p>Your Ideas, Our Future. Cast Your Vote!</p>
-    </header>
-
-    <main class="container">
-        <form id="votingForm" class="voting-form">
-            
-            <section class="rules">
-                <h3>How to Vote</h3>
-                <ul>
-                    <li>💰 Allocate your $10 budget</li>
-                    <li>🎯 Vote for exactly 3 ideas</li>
-                    <li>✋ Max $5 per idea</li>
-                </ul>
-            </section>
-
-            <section class="user-details">
-                <div>
-                    <label for="name">Your Name:</label>
-                    <input type="text" id="name" name="name" required>
-                </div>
-                <div>
-                    <label for="email">Your Email:</label>
-                    <input type="email" id="email" name="email" required>
-                </div>
-            </section>
-
-            <div class="ideas-grid">
-                <article class="idea-card" data-idea-id="1">
-                    <h4>Idea #1: Automated Reporting</h4>
-                    <div class="description">
-                        <p><strong>Problem:</strong> Manually compiling weekly reports is time-consuming.</p>
-                        <p><strong>Solution:</strong> A script that automatically pulls data and generates a report.</p>
-                        <p><strong>Impact:</strong> Saves 5 hours per week and reduces human error.</p>
-                    </div>
-                    <div class="vote-control">
-                        <button type="button" class="stepper-btn minus" aria-label="Decrease amount">-</button>
-                        <span class="vote-amount">$0</span>
-                        <button type="button" class="stepper-btn plus" aria-label="Increase amount">+</button>
-                    </div>
-                </article>
-
-                <article class="idea-card" data-idea-id="2">
-                    <h4>Idea #2: Smart Onboarding</h4>
-                     <div class="description">
-                        <p><strong>Problem:</strong> New hire setup involves multiple manual steps across different systems.</p>
-                        <p><strong>Solution:</strong> A workflow that triggers account creation and access rights automatically.</p>
-                        <p><strong>Impact:</strong> Faster onboarding and a better day-1 experience for new employees.</p>
-                    </div>
-                    <div class="vote-control">
-                        <button type="button" class="stepper-btn minus" aria-label="Decrease amount">-</button>
-                        <span class="vote-amount">$0</span>
-                        <button type="button" class="stepper-btn plus" aria-label="Increase amount">+</button>
-                    </div>
-                </article>
-
-                <article class="idea-card" data-idea-id="3">
-                    <h4>Idea #3: Slack Integration for Approvals</h4>
-                     <div class="description">
-                        <p><strong>Problem:</strong> Leave and expense approvals get lost in email chains.</p>
-                        <p><strong>Solution:</strong> A Slack bot that sends approval requests as interactive messages.</p>
-                        <p><strong>Impact:</strong> Quicker approvals and better tracking of requests.</p>
-                    </div>
-                    <div class="vote-control">
-                        <button type="button" class="stepper-btn minus" aria-label="Decrease amount">-</button>
-                        <span class="vote-amount">$0</span>
-                        <button type="button" class="stepper-btn plus" aria-label="Increase amount">+</button>
-                    </div>
-                </article>
-                
-                </div>
-        </form>
-    </main>
-
-    <div class="tracker-bar">
-        <div class="tracker-item">
-            <span>Total Allocated</span>
-            <div id="total-allocated" class="value">$0 / $10</div>
-        </div>
-        <div class="tracker-item">
-            <span>Ideas Selected</span>
-            <div id="ideas-selected" class="value">0 / 3</div>
-        </div>
-        <button type="submit" id="submit-btn" form="votingForm" disabled>Submit Vote</button>
+    <div class="header">
+        <h1>Ideathon Automating axiTrust</h1>
+        <p>Allocate $10 across exactly 3 options (max $5 per option)</p>
     </div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const ideas = {}; // To store the state of each idea { id: amount }
-            const MAX_TOTAL_ALLOCATION = 10;
-            const MAX_IDEAS = 3;
-            const MAX_PER_IDEA = 5;
+    <div class="form-wrapper">
+        <form id="votingForm" action="YOUR_FORMSPREE_URL" method="POST">
+            
+            <div class="input-group">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" class="styled-input" required>
+            </div>
+            
+            <div class="input-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" class="styled-input" required>
+            </div>
 
-            const totalAllocatedEl = document.getElementById('total-allocated');
-            const ideasSelectedEl = document.getElementById('ideas-selected');
-            const submitBtn = document.getElementById('submit-btn');
-            const ideaCards = document.querySelectorAll('.idea-card');
+            <div class="options-grid">
+                <div class="option-item">
+                    <label for="option1">Option 1: $</label>
+                    <input type="number" id="option1" name="option1" class="styled-input" value="0" min="0" max="5">
+                </div>
+                
+                <div class="option-item">
+                    <label for="option2">Option 2: $</label>
+                    <input type="number" id="option2" name="option2" class="styled-input" value="0" min="0" max="5">
+                </div>
+                 <div class="option-item">
+                    <label for="option3">Option 3: $</label>
+                    <input type="number" id="option3" name="option3" class="styled-input" value="0" min="0" max="5">
+                </div>
+                </div>
 
-            // Initialize state for all cards
-            ideaCards.forEach(card => {
-                const ideaId = card.dataset.ideaId;
-                ideas[ideaId] = 0;
+            <div id="status-message" class="status-message"></div>
+
+            <button type="submit" id="submit-btn" class="submit-button">Submit Vote</button>
+
+        </form>
+    </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const submitBtn = document.getElementById('submit-btn');
+        const optionInputs = document.querySelectorAll('.options-grid .styled-input');
+        const statusMessageEl = document.getElementById('status-message');
+
+        function validateRules() {
+            let totalAmount = 0;
+            let optionsVotedCount = 0;
+
+            // Calculate totals and counts from all input fields
+            optionInputs.forEach(input => {
+                const value = parseInt(input.value) || 0;
+                if (value > 0) {
+                    totalAmount += value;
+                    optionsVotedCount++;
+                }
             });
 
-            function updateState() {
-                let currentTotal = 0;
-                let selectedIdeasCount = 0;
+            const isTotalCorrect = totalAmount === 10;
+            const isOptionsCountCorrect = optionsVotedCount === 3;
 
-                // Recalculate everything from the `ideas` object
-                for (const id in ideas) {
-                    currentTotal += ideas[id];
-                    if (ideas[id] > 0) {
-                        selectedIdeasCount++;
-                        document.querySelector(`[data-idea-id='${id}']`).classList.add('selected');
-                    } else {
-                         document.querySelector(`[data-idea-id='${id}']`).classList.remove('selected');
-                    }
-                }
-                
-                // Update tracker display
-                totalAllocatedEl.textContent = `$${currentTotal} / $${MAX_TOTAL_ALLOCATION}`;
-                ideasSelectedEl.textContent = `${selectedIdeasCount} / ${MAX_IDEAS}`;
-
-                // Check conditions and update submit button
-                const isTotalCorrect = currentTotal === MAX_TOTAL_ALLOCATION;
-                const isIdeaCountCorrect = selectedIdeasCount === MAX_IDEAS;
-
-                if (isTotalCorrect && isIdeaCountCorrect) {
-                    submitBtn.disabled = false;
-                } else {
-                    submitBtn.disabled = true;
+            // Check if all rules are met
+            if (isTotalCorrect && isOptionsCountCorrect) {
+                submitBtn.disabled = false;
+                statusMessageEl.textContent = '✅ All good! You can submit your vote.';
+                statusMessageEl.classList.add('success');
+            } else {
+                submitBtn.disabled = true;
+                statusMessageEl.classList.remove('success');
+                // Provide a helpful error message
+                if (optionsVotedCount !== 3) {
+                    statusMessageEl.textContent = `Please vote for exactly 3 options. (Currently: ${optionsVotedCount})`;
+                } else { // This means totalAmount is not 10
+                    statusMessageEl.textContent = `The total amount must be exactly $10. (Currently: $${totalAmount})`;
                 }
             }
+        }
 
-            // Add event listeners to all stepper buttons
-            ideaCards.forEach(card => {
-                const ideaId = card.dataset.ideaId;
-                const amountEl = card.querySelector('.vote-amount');
-                
-                card.querySelector('.plus').addEventListener('click', () => {
-                    let currentTotal = Object.values(ideas).reduce((a, b) => a + b, 0);
-                    if (ideas[ideaId] < MAX_PER_IDEA && currentTotal < MAX_TOTAL_ALLOCATION) {
-                        ideas[ideaId]++;
-                        amountEl.textContent = `$${ideas[ideaId]}`;
-                        updateState();
-                    }
-                });
-
-                card.querySelector('.minus').addEventListener('click', () => {
-                    if (ideas[ideaId] > 0) {
-                        ideas[ideaId]--;
-                        amountEl.textContent = `$${ideas[ideaId]}`;
-                        updateState();
-                    }
-                });
-            });
-            
-            // Handle form submission
-            document.getElementById('votingForm').addEventListener('submit', (e) => {
-                e.preventDefault(); // Prevents actual form submission for this demo
-                alert('Thank you for your vote! Your choices have been recorded.');
-                // In a real application, you would send the `ideas` object and user details to a server here.
-                submitBtn.disabled = true;
-                submitBtn.textContent = "Thank You!";
-            });
-            
-            // Initial state check
-            updateState();
+        // Add an event listener to each input box
+        optionInputs.forEach(input => {
+            input.addEventListener('input', validateRules);
         });
-    </script>
+
+        // Run the validation once on page load to set the initial disabled state
+        validateRules();
+    });
+</script>
+
 </body>
 </html>
