@@ -6,7 +6,6 @@
     <title>axiTrust Ideathon Voting</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
-    /* --- CSS Variables (from your flyer) --- */
     :root {
         --primary-green: #16a085;
         --accent-pink: #f57d9d;
@@ -18,8 +17,6 @@
         --border-radius: 12px;
         --box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     }
-
-    /* --- General Body Styles --- */
     body {
         font-family: 'Poppins', sans-serif;
         background-color: var(--light-grey);
@@ -27,8 +24,6 @@
         margin: 0;
         padding: 0;
     }
-
-    /* --- Header Styling --- */
     .header {
         background-color: var(--accent-pink);
         color: var(--light-text);
@@ -36,21 +31,13 @@
         text-align: center;
         box-shadow: 0 2px 10px rgba(0,0,0,0.1);
     }
-    .header h1 {
-        margin: 0;
-    }
-    .header p {
-        margin: 5px 0 0;
-        opacity: 0.9;
-    }
-
-    /* --- Form Container --- */
+    .header h1 { margin: 0; }
+    .header p { margin: 5px 0 0; opacity: 0.9; }
     .form-wrapper {
         padding: 30px 20px;
         display: flex;
         justify-content: center;
     }
-
     form {
         background-color: var(--card-bg);
         padding: 30px;
@@ -59,16 +46,8 @@
         max-width: 700px;
         width: 100%;
     }
-
-    /* --- Styling for Input Fields --- */
-    .input-group {
-        margin-bottom: 20px;
-    }
-    .input-group label {
-        display: block;
-        margin-bottom: 8px;
-        font-weight: 600;
-    }
+    .input-group { margin-bottom: 20px; }
+    .input-group label { display: block; margin-bottom: 8px; font-weight: 600; }
     .styled-input {
         width: 100%;
         padding: 12px;
@@ -76,10 +55,8 @@
         border-radius: 8px;
         font-family: 'Poppins', sans-serif;
         font-size: 1em;
-        box-sizing: border-box; /* Important */
+        box-sizing: border-box;
     }
-
-    /* --- Grid for the Options --- */
     .options-grid {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -93,15 +70,8 @@
         align-items: center;
         gap: 15px;
     }
-    .option-item label {
-        font-weight: 600;
-        margin-bottom: 0;
-    }
-    .option-item input {
-        width: 80px; /* Smaller width for number inputs */
-    }
-
-    /* --- Submit Button --- */
+    .option-item label { font-weight: 600; margin-bottom: 0; }
+    .option-item input { width: 80px; }
     .submit-button {
         background-color: var(--primary-green);
         color: var(--light-text);
@@ -116,15 +86,8 @@
         margin-top: 30px;
         transition: all 0.2s;
     }
-    .submit-button:hover {
-        background-color: #117a65;
-    }
-    .submit-button:disabled {
-        background-color: #bdc3c7;
-        cursor: not-allowed;
-    }
-    
-    /* --- Status Message Styling --- */
+    .submit-button:hover { background-color: #117a65; }
+    .submit-button:disabled { background-color: #bdc3c7; cursor: not-allowed; }
     .status-message {
         text-align: center;
         font-weight: 600;
@@ -134,9 +97,7 @@
         min-height: 24px;
         color: var(--error-red);
     }
-    .status-message.success {
-        color: var(--primary-green);
-    }
+    .status-message.success { color: var(--primary-green); }
     </style>
 </head>
 <body>
@@ -164,83 +125,68 @@
                     <label for="option1">Option 1: $</label>
                     <input type="number" id="option1" name="Option 1" class="styled-input" value="0" min="0" max="5">
                 </div>
-                
                 <div class="option-item">
                     <label for="option2">Option 2: $</label>
                     <input type="number" id="option2" name="Option 2" class="styled-input" value="0" min="0" max="5">
                 </div>
-
                 <div class="option-item">
                     <label for="option3">Option 3: $</label>
                     <input type="number" id="option3" name="Option 3" class="styled-input" value="0" min="0" max="5">
                 </div>
-                
                 <div class="option-item">
                     <label for="option4">Option 4: $</label>
                     <input type="number" id="option4" name="Option 4" class="styled-input" value="0" min="0" max="5">
                 </div>
-
                 <div class="option-item">
                     <label for="option5">Option 5: $</label>
                     <input type="number" id="option5" name="Option 5" class="styled-input" value="0" min="0" max="5">
                 </div>
-
                 <div class="option-item">
                     <label for="option6">Option 6: $</label>
                     <input type="number" id="option6" name="Option 6" class="styled-input" value="0" min="0" max="5">
                 </div>
-
                 <div class="option-item">
                     <label for="option7">Option 7: $</label>
                     <input type="number" id="option7" name="Option 7" class="styled-input" value="0" min="0" max="5">
                 </div>
-
                 <div class="option-item">
                     <label for="option8">Option 8: $</label>
                     <input type="number" id="option8" name="Option 8" class="styled-input" value="0" min="0" max="5">
                 </div>
-
                 <div class="option-item">
                     <label for="option9">Option 9: $</label>
                     <input type="number" id="option9" name="Option 9" class="styled-input" value="0" min="0" max="5">
                 </div>
-
                 <div class="option-item">
                     <label for="option10">Option 10: $</label>
                     <input type="number" id="option10" name="Option 10" class="styled-input" value="0" min="0" max="5">
                 </div>
-
                 <div class="option-item">
                     <label for="option11">Option 11: $</label>
                     <input type="number" id="option11" name="Option 11" class="styled-input" value="0" min="0" max="5">
                 </div>
-
                 <div class="option-item">
                     <label for="option12">Option 12: $</label>
                     <input type="number" id="option12" name="Option 12" class="styled-input" value="0" min="0" max="5">
                 </div>
-
                 <div class="option-item">
                     <label for="option13">Option 13: $</label>
                     <input type="number" id="option13" name="Option 13" class="styled-input" value="0" min="0" max="5">
                 </div>
-
                 <div class="option-item">
                     <label for="option14">Option 14: $</label>
                     <input type="number" id="option14" name="Option 14" class="styled-input" value="0" min="0" max="5">
                 </div>
-
                 <div class="option-item">
                     <label for="option15">Option 15: $</label>
                     <input type="number" id="option15" name="Option 15" class="styled-input" value="0" min="0" max="5">
                 </div>
-
                 <div class="option-item">
                     <label for="option16">Option 16: $</label>
                     <input type="number" id="option16" name="Option 16" class="styled-input" value="0" min="0" max="5">
                 </div>
             </div>
-
+            
             <div id="status-message" class="status-message"></div>
 
             <button type="submit" id="submit-btn" class="submit-button">Submit Vote</button>
@@ -258,8 +204,53 @@
             let totalAmount = 0;
             let optionsVotedCount = 0;
 
-            // Calculate totals and counts from all input fields
+            // Step 1: Calculate the current totals and counts
             optionInputs.forEach(input => {
                 const value = parseInt(input.value) || 0;
+                // Add to total regardless of whether it's positive
+                totalAmount += value; 
+                // Only count as a "vote" if money is allocated
                 if (value > 0) {
-                    totalAmount += value;
+                    optionsVotedCount++;
+                }
+            });
+
+            const isTotalCorrect = totalAmount === 10;
+            const isOptionsCountCorrect = optionsVotedCount === 3;
+
+            // Step 2: Check if all rules pass
+            if (isTotalCorrect && isOptionsCountCorrect) {
+                // SUCCESS CASE: Enable the button and show a success message
+                submitBtn.disabled = false;
+                statusMessageEl.textContent = '✅ All good! You can submit your vote.';
+                statusMessageEl.classList.add('success');
+            } else {
+                // FAILURE CASE: Disable the button and show a helpful error message
+                submitBtn.disabled = true;
+                statusMessageEl.classList.remove('success');
+                
+                let message = '';
+                // Prioritize the error messages for better user experience
+                if (totalAmount === 0 && optionsVotedCount === 0) {
+                    message = 'Please begin voting by entering an amount.';
+                } else if (optionsVotedCount !== 3) {
+                    message = `You must vote for exactly 3 options. (Currently voted for ${optionsVotedCount})`;
+                } else { // If the count is 3, then the amount must be the problem.
+                    message = `The total must be exactly $10. (Currently $${totalAmount})`;
+                }
+                statusMessageEl.textContent = message;
+            }
+        }
+
+        // Add an event listener to each input box to run validation on every change
+        optionInputs.forEach(input => {
+            input.addEventListener('input', validateRules);
+        });
+
+        // Run validation once on page load to set the initial state
+        validateRules();
+    });
+</script>
+
+</body>
+</html>
