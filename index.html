@@ -147,7 +147,7 @@
     </div>
 
     <div class="form-wrapper">
-        <form id="votingForm" action="YOUR_FORMSPREE_URL" method="POST">
+        <form id="votingForm" action="https://formspree.io/f/xwpqljvn" method="POST">
             
             <div class="input-group">
                 <label for="name">Name:</label>
@@ -162,18 +162,84 @@
             <div class="options-grid">
                 <div class="option-item">
                     <label for="option1">Option 1: $</label>
-                    <input type="number" id="option1" name="option1" class="styled-input" value="0" min="0" max="5">
+                    <input type="number" id="option1" name="Option 1" class="styled-input" value="0" min="0" max="5">
                 </div>
                 
                 <div class="option-item">
                     <label for="option2">Option 2: $</label>
-                    <input type="number" id="option2" name="option2" class="styled-input" value="0" min="0" max="5">
+                    <input type="number" id="option2" name="Option 2" class="styled-input" value="0" min="0" max="5">
                 </div>
-                 <div class="option-item">
+
+                <div class="option-item">
                     <label for="option3">Option 3: $</label>
-                    <input type="number" id="option3" name="option3" class="styled-input" value="0" min="0" max="5">
+                    <input type="number" id="option3" name="Option 3" class="styled-input" value="0" min="0" max="5">
                 </div>
+                
+                <div class="option-item">
+                    <label for="option4">Option 4: $</label>
+                    <input type="number" id="option4" name="Option 4" class="styled-input" value="0" min="0" max="5">
                 </div>
+
+                <div class="option-item">
+                    <label for="option5">Option 5: $</label>
+                    <input type="number" id="option5" name="Option 5" class="styled-input" value="0" min="0" max="5">
+                </div>
+
+                <div class="option-item">
+                    <label for="option6">Option 6: $</label>
+                    <input type="number" id="option6" name="Option 6" class="styled-input" value="0" min="0" max="5">
+                </div>
+
+                <div class="option-item">
+                    <label for="option7">Option 7: $</label>
+                    <input type="number" id="option7" name="Option 7" class="styled-input" value="0" min="0" max="5">
+                </div>
+
+                <div class="option-item">
+                    <label for="option8">Option 8: $</label>
+                    <input type="number" id="option8" name="Option 8" class="styled-input" value="0" min="0" max="5">
+                </div>
+
+                <div class="option-item">
+                    <label for="option9">Option 9: $</label>
+                    <input type="number" id="option9" name="Option 9" class="styled-input" value="0" min="0" max="5">
+                </div>
+
+                <div class="option-item">
+                    <label for="option10">Option 10: $</label>
+                    <input type="number" id="option10" name="Option 10" class="styled-input" value="0" min="0" max="5">
+                </div>
+
+                <div class="option-item">
+                    <label for="option11">Option 11: $</label>
+                    <input type="number" id="option11" name="Option 11" class="styled-input" value="0" min="0" max="5">
+                </div>
+
+                <div class="option-item">
+                    <label for="option12">Option 12: $</label>
+                    <input type="number" id="option12" name="Option 12" class="styled-input" value="0" min="0" max="5">
+                </div>
+
+                <div class="option-item">
+                    <label for="option13">Option 13: $</label>
+                    <input type="number" id="option13" name="Option 13" class="styled-input" value="0" min="0" max="5">
+                </div>
+
+                <div class="option-item">
+                    <label for="option14">Option 14: $</label>
+                    <input type="number" id="option14" name="Option 14" class="styled-input" value="0" min="0" max="5">
+                </div>
+
+                <div class="option-item">
+                    <label for="option15">Option 15: $</label>
+                    <input type="number" id="option15" name="Option 15" class="styled-input" value="0" min="0" max="5">
+                </div>
+
+                <div class="option-item">
+                    <label for="option16">Option 16: $</label>
+                    <input type="number" id="option16" name="Option 16" class="styled-input" value="0" min="0" max="5">
+                </div>
+            </div>
 
             <div id="status-message" class="status-message"></div>
 
@@ -197,39 +263,3 @@
                 const value = parseInt(input.value) || 0;
                 if (value > 0) {
                     totalAmount += value;
-                    optionsVotedCount++;
-                }
-            });
-
-            const isTotalCorrect = totalAmount === 10;
-            const isOptionsCountCorrect = optionsVotedCount === 3;
-
-            // Check if all rules are met
-            if (isTotalCorrect && isOptionsCountCorrect) {
-                submitBtn.disabled = false;
-                statusMessageEl.textContent = '✅ All good! You can submit your vote.';
-                statusMessageEl.classList.add('success');
-            } else {
-                submitBtn.disabled = true;
-                statusMessageEl.classList.remove('success');
-                // Provide a helpful error message
-                if (optionsVotedCount !== 3) {
-                    statusMessageEl.textContent = `Please vote for exactly 3 options. (Currently: ${optionsVotedCount})`;
-                } else { // This means totalAmount is not 10
-                    statusMessageEl.textContent = `The total amount must be exactly $10. (Currently: $${totalAmount})`;
-                }
-            }
-        }
-
-        // Add an event listener to each input box
-        optionInputs.forEach(input => {
-            input.addEventListener('input', validateRules);
-        });
-
-        // Run the validation once on page load to set the initial disabled state
-        validateRules();
-    });
-</script>
-
-</body>
-</html>
