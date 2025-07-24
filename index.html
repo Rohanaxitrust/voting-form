@@ -148,7 +148,7 @@
     </div>
 
     <div class="form-wrapper">
-        <form id="votingForm" action="https://formspree.io/f/xwpqljvn" method="POST">
+        <form id="votingForm" action="https://script.google.com/macros/s/AKfycbz9eo7QXw3USKV9ZO4kcsxR2ZJZyjTvWjCxgn5rJ_UR3yX8NSgMxDWZrxvWRKdnhZq5/exec" method="POST">
             
             <div class="input-group">
                 <label for="name">Name:</label>
@@ -173,79 +173,51 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // --- START: YOUR AIRTABLE INFO ---
         const AIRTABLE_PAT_KEY = 'patlxirSJVruAxINY.260aff8049b488866cf0a10b4d520222ac3f33a447e067d21084f605c1019411';
         const AIRTABLE_BASE_ID = 'appHlXN2Hng7Zhh40';
         const AIRTABLE_TABLE_NAME = 'Table 1';
-        // --- END: YOUR AIRTABLE INFO ---
 
         const optionsGrid = document.getElementById('options-grid-container');
         const loadingMessage = document.getElementById('loading-message');
         const submitBtn = document.getElementById('submit-btn');
         const statusMessageEl = document.getElementById('status-message');
+        const votingForm = document.getElementById('votingForm'); // Get the form element
         
         const fetchURL = `https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/${encodeURIComponent(AIRTABLE_TABLE_NAME)}`;
 
         async function fetchIdeas() {
             try {
-                const response = await fetch(fetchURL, {
-                    headers: {
-                        'Authorization': `Bearer ${AIRTABLE_PAT_KEY}`
-                    }
-                });
-
-                if (!response.ok) {
-                    throw new Error(`Airtable API Error: ${response.status} ${response.statusText}`);
-                }
-
+                const response = await fetch(fetchURL, { headers: { 'Authorization': `Bearer ${AIRTABLE_PAT_KEY}` } });
+                if (!response.ok) { throw new Error(`Airtable API Error: ${response.status} ${response.statusText}`); }
                 const data = await response.json();
-                
-                if (data.records.length === 0) {
-                    loadingMessage.textContent = 'No ideas have been submitted yet.';
-                    return;
-                }
-
+                if (data.records.length === 0) { loadingMessage.textContent = 'No ideas have been submitted yet.'; return; }
                 loadingMessage.style.display = 'none';
                 
                 data.records.forEach((record, index) => {
                     const ideaId = index + 1;
                     const problem = record.fields['Problem Statement'] || 'No problem statement provided';
-                    
                     const optionDiv = document.createElement('div');
                     optionDiv.className = 'option-item';
-                    optionDiv.innerHTML = `
-                        <label for="option${ideaId}">${problem}: $</label>
-                        <input type="number" id="option${ideaId}" name="${problem}" class="styled-input" value="0" min="0" max="5">
-                    `;
+                    optionDiv.innerHTML = `<label for="option${ideaId}">${problem}: $</label><input type="number" id="option${ideaId}" name="${problem}" class="styled-input" value="0" min="0" max="5">`;
                     optionsGrid.appendChild(optionDiv);
                 });
-
                 setupValidation();
-
             } catch (error) {
                 console.error(error);
-                loadingMessage.textContent = 'Error: Could not load ideas. Please check API credentials in the code.';
+                loadingMessage.textContent = 'Error: Could not load ideas.';
             }
         }
 
         function setupValidation() {
             const optionInputs = document.querySelectorAll('.options-grid .styled-input');
-            
             function validateRules() {
-                let totalAmount = 0;
-                let optionsVotedCount = 0;
-
+                let totalAmount = 0, optionsVotedCount = 0;
                 optionInputs.forEach(input => {
                     const value = parseInt(input.value) || 0;
                     totalAmount += value;
-                    if (value > 0) {
-                        optionsVotedCount++;
-                    }
+                    if (value > 0) { optionsVotedCount++; }
                 });
-
-                const isTotalCorrect = totalAmount === 10;
-                const isOptionsCountCorrect = optionsVotedCount === 3;
-
+                const isTotalCorrect = totalAmount === 10, isOptionsCountCorrect = optionsVotedCount === 3;
                 if (isTotalCorrect && isOptionsCountCorrect) {
                     submitBtn.disabled = false;
                     statusMessageEl.textContent = '✅ All good! You can submit your vote.';
@@ -255,22 +227,42 @@
                     statusMessageEl.classList.remove('success');
                     let message = 'Please begin voting by entering an amount.';
                     if (totalAmount > 0 || optionsVotedCount > 0) {
-                         if (optionsVotedCount !== 3) {
-                            message = `You must vote for exactly 3 options. (Currently voted for ${optionsVotedCount})`;
-                        } else {
-                            message = `The total must be exactly $10. (Currently $${totalAmount})`;
-                        }
+                        message = (optionsVotedCount !== 3) ? `You must vote for exactly 3 options. (Currently: ${optionsVotedCount})` : `The total must be exactly $10. (Currently: $${totalAmount})`;
                     }
                     statusMessageEl.textContent = message;
                 }
             }
-
-            optionInputs.forEach(input => {
-                input.addEventListener('input', validateRules);
-            });
+            optionInputs.forEach(input => input.addEventListener('input', validateRules));
             validateRules();
         }
         
+        // New background submission logic
+        votingForm.addEventListener('submit', function(e) {
+            e.preventDefault(); // Stop the default page redirect
+            const formData = new FormData(votingForm);
+            
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Submitting...';
+
+            fetch(votingForm.action, {
+                method: 'POST',
+                body: formData
+            }).then(response => response.text())
+              .then(data => {
+                if (data === "Success") {
+                    document.querySelector('.form-wrapper').innerHTML = `<div style="text-align:center;"><h2>Thank You!</h2><p>Your vote has been successfully recorded.</p></div>`;
+                } else {
+                    alert('There was an error submitting your vote. Please try again.');
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = 'Submit Vote';
+                }
+            }).catch(error => {
+                alert('A network error occurred. Please try again.');
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Submit Vote';
+            });
+        });
+
         fetchIdeas();
     });
 </script>
