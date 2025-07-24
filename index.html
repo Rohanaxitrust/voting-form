@@ -6,6 +6,33 @@
     <title>axiTrust Ideathon Voting</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
+/* --- Styling for the Rules Banner --- */
+    .rules-banner {
+        background-color: var(--card-bg);
+        padding: 20px;
+        border-radius: var(--border-radius);
+        box-shadow: var(--box-shadow);
+        margin: -15px auto 30px auto; /* Pulls it up slightly and adds space below */
+        max-width: 840px;
+        text-align: center;
+}
+    .rules-container {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        flex-wrap: wrap; /* Allows wrapping on smaller screens */
+        gap: 15px;
+        margin-top: 10px;
+}
+    .rule-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-weight: 600;
+}
+    .rule-item span {
+        color: var(--primary-green);
+}
     :root {
         --primary-green: #16a085;
         --accent-pink: #f57d9d;
@@ -113,7 +140,14 @@
         <h1>Ideathon Automating axiTrust</h1>
         <p>Allocate $10 across exactly 3 options (max $5 per option)</p>
     </div>
-
+    <div class="rules-banner">
+        <h4>How to Vote</h4>
+        <div class="rules-container">
+            <div class="rule-item">💰 <span>Allocate your $10 budget</span></div>
+            <div class="rule-item">🎯 <span>Vote for exactly 3 ideas</span></div>
+            <div class="rule-item">✋ <span>Max $5 per idea</span></div>
+        </div>
+    </div>
     <div class="form-wrapper">
         <form id="votingForm" action="https://formspree.io/f/xwpqljvn" method="POST">
             
