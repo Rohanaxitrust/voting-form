@@ -6,6 +6,57 @@
     <title>axiTrust Ideathon Voting</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
+/* --- Styling for the Modal Pop-up --- */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed;
+    z-index: 1001; /* Sit on top of everything */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.5); /* Black with opacity */
+}
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px 30px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 600px;
+    border-radius: var(--border-radius);
+    position: relative;
+    animation: fadeIn 0.3s;
+}
+@keyframes fadeIn {
+    from {opacity: 0; transform: scale(0.95);}
+    to {opacity: 1; transform: scale(1);}
+}
+.close-button {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+.close-button:hover {
+    color: black;
+}
+.modal-content h3 {
+    margin-top: 0;
+    color: var(--primary-green);
+}
+
+/* --- Styling for the "Details" link --- */
+.details-link {
+    font-size: 0.8em;
+    font-weight: 600;
+    color: var(--primary-green);
+    cursor: pointer;
+    margin-left: 8px;
+    text-decoration: underline;
+}
         /* Add a subtle lift effect to the whole form option on hover */
 .option-item:hover {
     transform: translateY(-2px);
@@ -191,27 +242,33 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
+        // --- START: YOUR AIRTABLE INFO ---
         const AIRTABLE_PAT_KEY = 'patlxirSJVruAxINY.260aff8049b488866cf0a10b4d520222ac3f33a447e067d21084f605c1019411';
         const AIRTABLE_BASE_ID = 'appHlXN2Hng7Zhh40';
         const AIRTABLE_TABLE_NAME = 'Table 1';
+        // --- END: YOUR AIRTABLE INFO ---
 
         const optionsGrid = document.getElementById('options-grid-container');
         const loadingMessage = document.getElementById('loading-message');
         const submitBtn = document.getElementById('submit-btn');
         const statusMessageEl = document.getElementById('status-message');
-        const votingForm = document.getElementById('votingForm'); // Get the form element
-        
+        const votingForm = document.getElementById('votingForm');
+
+        // Modal elements
+        const modal = document.getElementById('idea-modal');
+        const modalProblem = document.getElementById('modal-problem');
+        const modalSolution = document.getElementById('modal-solution');
+        const modalImpact = document.getElementById('modal-impact');
+        const closeModal = document.querySelector('.close-button');
+
+        function truncateText(text, charLimit) {
+            if (typeof text !== 'string' || !text) { return 'No problem statement provided'; }
+            if (text.length > charLimit) { return text.substring(0, charLimit) + '...'; }
+            return text;
+        }
+
         const fetchURL = `https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/${encodeURIComponent(AIRTABLE_TABLE_NAME)}`;
-// This is the new function that shortens text to a character limit
-function truncateText(text, charLimit) {
-    if (typeof text !== 'string' || !text) {
-        return 'No problem statement provided';
-    }
-    if (text.length > charLimit) {
-        return text.substring(0, charLimit) + '...';
-    }
-    return text;
-}
+
         async function fetchIdeas() {
             try {
                 const response = await fetch(fetchURL, { headers: { 'Authorization': `Bearer ${AIRTABLE_PAT_KEY}` } });
@@ -223,79 +280,83 @@ function truncateText(text, charLimit) {
                 data.records.forEach((record, index) => {
                     const ideaId = index + 1;
                     const fullProblemText = record.fields['Problem Statement:'] || 'No problem statement provided';
-    
-    // This line creates the shortened version of the text
-       const shortProblemText = truncateText(fullProblemText, 25); // You can change 25 to your desired character limit
+                    const fullSolutionText = record.fields['Your Smart Solution:'] || 'No solution provided.';
+                    const fullImpactText = record.fields['The Impact:'] || 'No impact described.';
+
+                    const shortProblemText = truncateText(fullProblemText, 60);
 
                     const optionDiv = document.createElement('div');
                     optionDiv.className = 'option-item';
                     optionDiv.innerHTML = `
-                        <label for="option${ideaId}">${shortProblemText}: $</label>
+                        <label for="option${ideaId}">${shortProblemText}</label>
+                        <span class="details-link" data-problem="${fullProblemText}" data-solution="${fullSolutionText}" data-impact="${fullImpactText}">(Details)</span>
                         <input type="number" id="option${ideaId}" name="${shortProblemText}" class="styled-input" value="0" min="0" max="5">
-    `;
-    optionsGrid.appendChild(optionDiv);
-});
+                    `;
+                    optionsGrid.appendChild(optionDiv);
+                });
+
                 setupValidation();
+                setupModalTriggers();
+
             } catch (error) {
                 console.error(error);
                 loadingMessage.textContent = 'Error: Could not load ideas.';
             }
         }
 
+        function setupModalTriggers() {
+            document.querySelectorAll('.details-link').forEach(link => {
+                link.addEventListener('click', () => {
+                    modalProblem.textContent = link.dataset.problem;
+                    modalSolution.textContent = link.dataset.solution;
+                    modalImpact.textContent = link.dataset.impact;
+                    modal.style.display = 'block';
+                });
+            });
+
+            closeModal.onclick = () => { modal.style.display = 'none'; };
+            window.onclick = (event) => {
+                if (event.target == modal) {
+                    modal.style.display = 'none';
+                }
+            };
+        }
+
         function setupValidation() {
             const optionInputs = document.querySelectorAll('.options-grid .styled-input');
             function validateRules() {
-    let totalAmount = 0;
-    let optionsVotedCount = 0;
-
-    optionInputs.forEach(input => {
-        const value = parseInt(input.value) || 0;
-        totalAmount += value;
-        if (value > 0) {
-            optionsVotedCount++;
-        }
-    });
-
-    const isTotalCorrect = totalAmount === 10;
-    const isOptionsCountCorrect = optionsVotedCount === 3;
-
-    if (isTotalCorrect && isOptionsCountCorrect) {
-        submitBtn.disabled = false;
-        statusMessageEl.textContent = '✅ All good! You can submit your vote.';
-        statusMessageEl.classList.add('success');
-    } else {
-        submitBtn.disabled = true;
-        statusMessageEl.classList.remove('success');
-        let message = 'Please begin voting by entering an amount.';
-        if (totalAmount > 0 || optionsVotedCount > 0) {
-             // **This is the updated logic for the friendlier message**
-             if (optionsVotedCount < 3) {
-                message = `Oops! You need to pick ${3 - optionsVotedCount} more idea(s) to complete your vote.`;
-            } else if (optionsVotedCount > 3) {
-                message = `You've selected too many ideas. Please choose exactly 3.`;
-            } else { // If the count is 3, then the amount must be the problem.
-                message = `The total must be exactly $10. (Currently $${totalAmount})`;
+                let totalAmount = 0, optionsVotedCount = 0;
+                optionInputs.forEach(input => {
+                    const value = parseInt(input.value) || 0;
+                    totalAmount += value;
+                    if (value > 0) { optionsVotedCount++; }
+                });
+                const isTotalCorrect = totalAmount === 10, isOptionsCountCorrect = optionsVotedCount === 3;
+                if (isTotalCorrect && isOptionsCountCorrect) {
+                    submitBtn.disabled = false;
+                    statusMessageEl.textContent = '✅ All good! You can submit your vote.';
+                    statusMessageEl.classList.add('success');
+                } else {
+                    submitBtn.disabled = true;
+                    statusMessageEl.classList.remove('success');
+                    let message = 'Please begin voting by entering an amount.';
+                    if (totalAmount > 0 || optionsVotedCount > 0) {
+                        message = (optionsVotedCount !== 3) ? `Oops! You need to pick ${3 - optionsVotedCount} more idea(s) to complete your vote.` : `The total must be exactly $10. (Currently: $${totalAmount})`;
+                    }
+                    statusMessageEl.textContent = message;
+                }
             }
-        }
-        statusMessageEl.textContent = message;
-    }
-}
             optionInputs.forEach(input => input.addEventListener('input', validateRules));
             validateRules();
         }
         
-        // New background submission logic
         votingForm.addEventListener('submit', function(e) {
-            e.preventDefault(); // Stop the default page redirect
+            e.preventDefault();
             const formData = new FormData(votingForm);
-            
             submitBtn.disabled = true;
             submitBtn.textContent = 'Submitting...';
-
-            fetch(votingForm.action, {
-                method: 'POST',
-                body: formData
-            }).then(response => response.text())
+            fetch(votingForm.action, { method: 'POST', body: formData })
+              .then(response => response.text())
               .then(data => {
                 if (data === "Success") {
                     document.querySelector('.form-wrapper').innerHTML = `<div style="text-align:center;"><h2>Thank You!</h2><p>Your vote has been successfully recorded.</p></div>`;
@@ -304,16 +365,25 @@ function truncateText(text, charLimit) {
                     submitBtn.disabled = false;
                     submitBtn.textContent = 'Submit Vote';
                 }
-            }).catch(error => {
+              }).catch(error => {
                 alert('A network error occurred. Please try again.');
                 submitBtn.disabled = false;
                 submitBtn.textContent = 'Submit Vote';
-            });
+              });
         });
 
         fetchIdeas();
     });
 </script>
-
+<div id="idea-modal" class="modal">
+    <div class="modal-content">
+        <span class="close-button">&times;</span>
+        <h3 id="modal-problem"></h3>
+        <h4>Proposed Solution:</h4>
+        <p id="modal-solution"></p>
+        <h4>Impact:</h4>
+        <p id="modal-impact"></p>
+    </div>
+</div>
 </body>
 </html>
