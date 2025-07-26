@@ -202,14 +202,16 @@
         const votingForm = document.getElementById('votingForm'); // Get the form element
         
         const fetchURL = `https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/${encodeURIComponent(AIRTABLE_TABLE_NAME)}`;
- // This function shortens text to a specific word limit
-    function truncateText(text, wordLimit) {
-        const words = text.split(' ');
-        if (words.length > wordLimit) {
-            return words.slice(0, wordLimit).join(' ') + '...';
-        }
-        return text;
+// This is the new function that shortens text to a character limit
+function truncateText(text, charLimit) {
+    if (typeof text !== 'string' || !text) {
+        return 'No problem statement provided';
     }
+    if (text.length > charLimit) {
+        return text.substring(0, charLimit) + '...';
+    }
+    return text;
+}
         async function fetchIdeas() {
             try {
                 const response = await fetch(fetchURL, { headers: { 'Authorization': `Bearer ${AIRTABLE_PAT_KEY}` } });
@@ -223,7 +225,7 @@
                     const fullProblemText = record.fields['Problem Statement:'] || 'No problem statement provided';
     
     // This line creates the shortened version of the text
-                    const shortProblemText = truncateText(fullProblemText, 20); // You can change 10 to any word limit you like
+       const shortProblemText = truncateText(fullProblemText, 25); // You can change 25 to your desired character limit
 
                     const optionDiv = document.createElement('div');
                     optionDiv.className = 'option-item';
