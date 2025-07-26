@@ -158,45 +158,46 @@
         }
         const fetchURL = `https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/${encodeURIComponent(AIRTABLE_TABLE_NAME)}`;
 
-        form.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            submitBtn.disabled = true;
-            submitBtn.textContent = 'Submitting...';
+form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Submitting...';
 
-            const formData = new FormData(form);
-   const recordData = {
-    "fields": {
-        "Your Name:": formData.get('Submitter Name'),
-        "Your Email:": formData.get('Submitter Email'),
-        "Problem Statement:": formData.get('Problem Statement'),
-        "Your Smart Solution:": formData.get('Proposed Solution'),
-        "The Impact:": formData.get('Impact')
-    }
-};
+    const formData = new FormData(form);
+    const recordData = {
+        "fields": {
+            "Your Name:": formData.get('Submitter Name'),
+            "Your Email:": formData.get('Submitter Email'),
+            "Problem Statement:": formData.get('Problem Statement'),
+            "Your Smart Solution:": formData.get('Proposed Solution'),
+            "The Impact:": formData.get('Impact')
+        }
+    };
 
-            try {
-                const response = await fetch(fetchURL, {
-                    method: 'POST',
-                    headers: {
-                        'Authorization': `Bearer ${AIRTABLE_PAT_KEY}`,
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(recordData)
-                });
-
-                if (!response.ok) {
-                    throw new Error(`API Error: ${response.status} ${response.statusText}`);
-                }
-
-                document.querySelector('.form-wrapper').innerHTML = `<div style="text-align:center; background-color:white; padding: 40px; border-radius:12px;"><h2>Thank You!</h2><p>Your idea has been successfully submitted.</p></div>`;
-
-            } catch (error) {
-                console.error(error);
-                alert('There was an error submitting your idea. Please try again.');
-                submitBtn.disabled = false;
-                submitBtn.textContent = 'Submit My Idea';
-            }
+    try {
+        const response = await fetch(fetchURL, {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${AIRTABLE_PAT_KEY}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(recordData)
         });
+
+        if (!response.ok) {
+            throw new Error(`API Error: ${response.status} ${response.statusText}`);
+        }
+
+        // This is the new "Awesome!" success message
+        document.querySelector('.form-wrapper').innerHTML = `<div style="text-align:center; background-color:white; padding: 40px; border-radius:12px;"><h2>Awesome! 🎉</h2><p>That's one legendary idea logged. Thanks for helping shape our future.</p><p style="margin-top:20px; font-size:0.9em;">Keep the great ideas flowing! Refresh the page for another go.</p></div>`;
+
+    } catch (error) {
+        console.error(error);
+        alert('There was an error submitting your idea. Please try again.');
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Submit My Idea';
+    }
+});
         setupCharCounters();
     });
 </script>
