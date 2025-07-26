@@ -6,6 +6,38 @@
     <title>Ideathon - Submit Your Idea</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
+        /* --- Styling for the Info Section --- */
+.info-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    max-width: 880px;
+    margin: -15px auto 30px auto;
+    padding: 0 20px;
+}
+.info-card {
+    background-color: var(--card-bg);
+    padding: 15px 25px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+}
+.info-card h4 {
+    color: var(--primary-green);
+    margin-bottom: 15px;
+    text-align: center;
+    font-size: 1.2em;
+}
+.info-card ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.info-card li {
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
     .required-asterisk {
     color: var(--error-red);
     margin-left: 4px;
@@ -96,6 +128,26 @@
         <h1>Ideathon: Submit Your Idea</h1>
         <p>Share your brilliant ideas on how we can automate our workflows.</p>
     </div>
+
+    <div class="info-container">
+    <div class="info-card timeline">
+        <h4>The Timeline 🗓️</h4>
+        <ul>
+            <li>💡 <strong>July 26:</strong> Idea Submissions Open</li>
+            <li>⏳ <strong>July 28:</strong> Final Day for Submissions</li>
+            <li>🗳️ <strong>July 29:</strong> Voting Begins</li>
+            <li>🏆 <strong>August 1:</strong> Winners Announced!</li>
+        </ul>
+    </div>
+    <div class="info-card prizes">
+        <h4>The Loot 🎁</h4>
+        <ul>
+            <li>🥇 <strong>Winner:</strong> ₹10,000 Amazon Voucher</li>
+            <li>🥈 <strong>1st Runner-up:</strong> ₹6,000 Amazon Voucher</li>
+            <li>🥉 <strong>2nd Runner-up:</strong> ₹4,000 Amazon Voucher</li>
+        </ul>
+    </div>
+</div>
 
     <div class="form-wrapper">
         <form id="idea-form">
