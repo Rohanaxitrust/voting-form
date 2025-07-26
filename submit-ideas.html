@@ -6,6 +6,12 @@
     <title>Ideathon - Submit Your Idea</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
+    .char-counter {
+    text-align: right;
+    font-size: 0.8em;
+    color: #777;
+    margin-top: 4px;
+    }
     :root {
         --primary-green: #16a085;
         --accent-pink: #f57d9d;
@@ -23,13 +29,15 @@
         margin: 0;
         padding: 0;
     }
-    .header {
-        background-color: var(--accent-pink);
-        color: var(--light-text);
-        padding: 20px;
-        text-align: center;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-    }
+   .header {
+    /* New gradient background */
+    background: linear-gradient(135deg, #f06ea9, #f57d9d);
+    color: var(--light-text);
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+      
     .header h1 { margin: 0; }
     .header p { margin: 5px 0 0; opacity: 0.9; }
     .form-wrapper {
@@ -87,37 +95,39 @@
 
     <div class="form-wrapper">
         <form id="idea-form">
-            
-            <div class="input-group">
-                <label for="name">Your Name:</label>
-                <input type="text" id="name" name="Submitter Name" class="styled-input" required>
-            </div>
-            
-            <div class="input-group">
-                <label for="email">Your Email:</label>
-                <input type="email" id="email" name="Submitter Email" class="styled-input" required>
-            </div>
+    <div class="input-group">
+        <label for="name">Name of this genius:</label>
+        <input type="text" id="name" name="Submitter Name" class="styled-input" required placeholder="e.g., Jane Doe">
+    </div>
 
-            <hr style="border: none; border-top: 1px solid var(--light-grey); margin: 30px 0;">
+    <div class="input-group">
+        <label for="email">Your Email:</label>
+        <input type="email" id="email" name="Submitter Email" class="styled-input" required placeholder="So we know who to thank!">
+    </div>
 
-            <div class="input-group">
-                <label for="problem">Problem Statement:</label>
-                <textarea id="problem" name="Problem Statement" class="styled-input" required></textarea>
-            </div>
-            
-            <div class="input-group">
-                <label for="solution">Your Smart Solution:</label>
-                <textarea id="solution" name="Proposed Solution" class="styled-input" required></textarea>
-            </div>
+    <hr style="border: none; border-top: 1px solid var(--light-grey); margin: 30px 0;">
 
-            <div class="input-group">
-                <label for="impact">The Impact:</label>
-                <textarea id="impact" name="Impact" class="styled-input" required></textarea>
-            </div>
+    <div class="input-group">
+        <label for="problem">What's bugging you?</label>
+        <p style="font-size: 0.9em; color: #555; margin-top: -5px;">Which tedious task do you find yourself avoiding? What do you find repetitive or boring?</p>
+       <textarea id="problem" name="Problem Statement" class="styled-input" required placeholder="e.g., 'Manually compiling the weekly sales report...'" maxlength="200"></textarea>
+<div class="char-counter">0 / 200</div>
+    </div>
+    
+    <div class="input-group">
+    <label for="solution">Your brilliant fix:</label>
+    <textarea id="solution" name="Proposed Solution" class="styled-input" required placeholder="e.g., 'A script that automatically pulls data from our different sources into a pre-made template.'" maxlength="200"></textarea>
+    <div class="char-counter">0 / 200</div>
+</div>
 
-            <button type="submit" id="submit-btn" class="submit-button">Submit My Idea</button>
+   <div class="input-group">
+    <label for="impact">Why this will make us legends:</label>
+    <textarea id="impact" name="Impact" class="styled-input" required placeholder="e.g., 'This will save the team about 5 hours a week and ensure the data is always accurate.'" maxlength="500"></textarea>
+    <div class="char-counter">0 / 500</div>
+</div>
 
-        </form>
+    <button type="submit" id="submit-btn" class="submit-button">Submit My Idea</button>
+</form>
     </div>
 
 <script>
@@ -130,6 +140,19 @@
 
         const form = document.getElementById('idea-form');
         const submitBtn = document.getElementById('submit-btn');
+        function setupCharCounters() {
+            const textareas = document.querySelectorAll('textarea[maxlength]');
+            textareas.forEach(textarea => {
+                const counter = textarea.nextElementSibling;
+        
+                // Update counter when user types
+                textarea.addEventListener('input', () => {
+                    const currentLength = textarea.value.length;
+                    const maxLength = textarea.getAttribute('maxlength');
+                    counter.textContent = `${currentLength} / ${maxLength}`;
+                });
+            });
+        }
         const fetchURL = `https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/${encodeURIComponent(AIRTABLE_TABLE_NAME)}`;
 
         form.addEventListener('submit', async (e) => {
@@ -172,6 +195,7 @@
             }
         });
     });
+setupCharCounters();
 </script>
 
 </body>
