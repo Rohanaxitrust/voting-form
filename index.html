@@ -6,6 +6,24 @@
     <title>axiTrust Ideathon Voting</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
+        /* Add a subtle lift effect to the whole form option on hover */
+.option-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+    transition: all 0.2s ease-in-out;
+}
+
+/* Make the submit button grow slightly on hover */
+.submit-button:hover:not(:disabled) {
+    transform: scale(1.02);
+    box-shadow: 0 4px 15px rgba(22, 160, 133, 0.4);
+}
+
+/* Highlight input fields when focused or hovered */
+.styled-input:focus,
+.styled-input:hover {
+    border-color: var(--primary-green);
+}
     :root {
         --primary-green: #16a085;
         --accent-pink: #f57d9d;
@@ -211,27 +229,41 @@
         function setupValidation() {
             const optionInputs = document.querySelectorAll('.options-grid .styled-input');
             function validateRules() {
-                let totalAmount = 0, optionsVotedCount = 0;
-                optionInputs.forEach(input => {
-                    const value = parseInt(input.value) || 0;
-                    totalAmount += value;
-                    if (value > 0) { optionsVotedCount++; }
-                });
-                const isTotalCorrect = totalAmount === 10, isOptionsCountCorrect = optionsVotedCount === 3;
-                if (isTotalCorrect && isOptionsCountCorrect) {
-                    submitBtn.disabled = false;
-                    statusMessageEl.textContent = '✅ All good! You can submit your vote.';
-                    statusMessageEl.classList.add('success');
-                } else {
-                    submitBtn.disabled = true;
-                    statusMessageEl.classList.remove('success');
-                    let message = 'Please begin voting by entering an amount.';
-                    if (totalAmount > 0 || optionsVotedCount > 0) {
-                        message = (optionsVotedCount !== 3) ? `You must vote for exactly 3 options. (Currently: ${optionsVotedCount})` : `The total must be exactly $10. (Currently: $${totalAmount})`;
-                    }
-                    statusMessageEl.textContent = message;
-                }
+    let totalAmount = 0;
+    let optionsVotedCount = 0;
+
+    optionInputs.forEach(input => {
+        const value = parseInt(input.value) || 0;
+        totalAmount += value;
+        if (value > 0) {
+            optionsVotedCount++;
+        }
+    });
+
+    const isTotalCorrect = totalAmount === 10;
+    const isOptionsCountCorrect = optionsVotedCount === 3;
+
+    if (isTotalCorrect && isOptionsCountCorrect) {
+        submitBtn.disabled = false;
+        statusMessageEl.textContent = '✅ All good! You can submit your vote.';
+        statusMessageEl.classList.add('success');
+    } else {
+        submitBtn.disabled = true;
+        statusMessageEl.classList.remove('success');
+        let message = 'Please begin voting by entering an amount.';
+        if (totalAmount > 0 || optionsVotedCount > 0) {
+             // **This is the updated logic for the friendlier message**
+             if (optionsVotedCount < 3) {
+                message = `Oops! You need to pick ${3 - optionsVotedCount} more idea(s) to complete your vote.`;
+            } else if (optionsVotedCount > 3) {
+                message = `You've selected too many ideas. Please choose exactly 3.`;
+            } else { // If the count is 3, then the amount must be the problem.
+                message = `The total must be exactly $10. (Currently $${totalAmount})`;
             }
+        }
+        statusMessageEl.textContent = message;
+    }
+}
             optionInputs.forEach(input => input.addEventListener('input', validateRules));
             validateRules();
         }
