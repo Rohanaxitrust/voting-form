@@ -110,14 +110,14 @@
     <div class="input-group">
         <label for="problem">What's bugging you?</label>
         <p style="font-size: 0.9em; color: #555; margin-top: -5px;">Which tedious task do you find yourself avoiding? What do you find repetitive or boring?</p>
-       <textarea id="problem" name="Problem Statement" class="styled-input" required placeholder="e.g., 'Manually compiling the weekly sales report...'" maxlength="200"></textarea>
-<div class="char-counter">0 / 200</div>
+       <textarea id="problem" name="Problem Statement" class="styled-input" required placeholder="e.g., 'Manually compiling the weekly sales report...'" maxlength="500"></textarea>
+<div class="char-counter">0 / 500</div>
     </div>
     
     <div class="input-group">
     <label for="solution">Your brilliant fix:</label>
-    <textarea id="solution" name="Proposed Solution" class="styled-input" required placeholder="e.g., 'A script that automatically pulls data from our different sources into a pre-made template.'" maxlength="200"></textarea>
-    <div class="char-counter">0 / 200</div>
+    <textarea id="solution" name="Proposed Solution" class="styled-input" required placeholder="e.g., 'A script that automatically pulls data from our different sources into a pre-made template.'" maxlength="500"></textarea>
+    <div class="char-counter">0 / 500</div>
 </div>
 
    <div class="input-group">
@@ -194,8 +194,8 @@
                 submitBtn.textContent = 'Submit My Idea';
             }
         });
+        setupCharCounters();
     });
-setupCharCounters();
 </script>
 
 </body>
