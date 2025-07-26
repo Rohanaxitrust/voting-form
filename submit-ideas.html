@@ -20,6 +20,11 @@
     padding: 15px 25px;
     border-radius: var(--border-radius);
     box-shadow: var(--box-shadow);
+    transition: all 0.2s ease-in-out; /* Add this for a smooth animation */
+}
+.info-card:hover {
+    transform: translateY(-3px); /* This makes the card lift */
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1); /* This enhances the shadow */
 }
 .info-card h4 {
     color: var(--primary-green);
