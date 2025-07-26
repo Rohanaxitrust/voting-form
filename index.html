@@ -213,7 +213,7 @@
                 
                 data.records.forEach((record, index) => {
                     const ideaId = index + 1;
-                    const problem = record.fields['Problem Statement'] || 'No problem statement provided';
+                    const problem = record.fields['Problem Statement:'] || 'No problem statement provided';
                     const optionDiv = document.createElement('div');
                     optionDiv.className = 'option-item';
                     optionDiv.innerHTML = `<label for="option${ideaId}">${problem}: $</label><input type="number" id="option${ideaId}" name="${problem}" class="styled-input" value="0" min="0" max="5">`;
