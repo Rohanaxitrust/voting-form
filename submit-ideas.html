@@ -6,6 +6,10 @@
     <title>Ideathon - Submit Your Idea</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
+    .required-asterisk {
+    color: var(--error-red);
+    margin-left: 4px;
+}
     .char-counter {
     text-align: right;
     font-size: 0.8em;
@@ -96,33 +100,32 @@
     <div class="form-wrapper">
         <form id="idea-form">
     <div class="input-group">
-        <label for="name">Name of this genius:</label>
-        <input type="text" id="name" name="Submitter Name" class="styled-input" required placeholder="e.g., Jane Doe">
-    </div>
-
+    <label for="name">Name of this genius:<span class="required-asterisk">*</span></label>
+    <input type="text" id="name" name="Submitter Name" class="styled-input" required placeholder="e.g., Jane Doe">
+</div>
     <div class="input-group">
-        <label for="email">Your Email:</label>
-        <input type="email" id="email" name="Submitter Email" class="styled-input" required placeholder="So we know who to thank!">
-    </div>
+    <label for="email">Your Email:<span class="required-asterisk">*</span></label>
+    <input type="email" id="email" name="Submitter Email" class="styled-input" required placeholder="So we know who to thank!">
+</div>
 
     <hr style="border: none; border-top: 1px solid var(--light-grey); margin: 30px 0;">
 
     <div class="input-group">
-        <label for="problem">What's bugging you?</label>
-        <p style="font-size: 0.9em; color: #555; margin-top: -5px;">Which tedious task do you find yourself avoiding? What do you find repetitive or boring?</p>
-       <textarea id="problem" name="Problem Statement" class="styled-input" required placeholder="e.g., 'Manually compiling the weekly sales report...'" maxlength="500"></textarea>
-<div class="char-counter">0 / 500</div>
-    </div>
+    <label for="problem">What's bugging you?<span class="required-asterisk">*</span></label>
+    <p style="font-size: 0.9em; color: #555; margin-top: -5px;">Which tedious task do you find yourself avoiding? What do you find repetitive or boring?</p>
+    <textarea id="problem" name="Problem Statement" class="styled-input" required placeholder="e.g., 'Manually compiling the weekly sales report...'" maxlength="500"></textarea>
+    <div class="char-counter">0 / 500</div>
+</div>
     
     <div class="input-group">
     <label for="solution">Your brilliant fix:</label>
-    <textarea id="solution" name="Proposed Solution" class="styled-input" required placeholder="e.g., 'A script that automatically pulls data from our different sources into a pre-made template.'" maxlength="500"></textarea>
+    <textarea id="solution" name="Proposed Solution" class="styled-input"  placeholder="e.g., 'A script that automatically pulls data from our different sources into a pre-made template.'" maxlength="500"></textarea>
     <div class="char-counter">0 / 500</div>
 </div>
 
    <div class="input-group">
     <label for="impact">Why this will make us legends:</label>
-    <textarea id="impact" name="Impact" class="styled-input" required placeholder="e.g., 'This will save the team about 5 hours a week and ensure the data is always accurate.'" maxlength="500"></textarea>
+    <textarea id="impact" name="Impact" class="styled-input"  placeholder="e.g., 'This will save the team about 5 hours a week and ensure the data is always accurate.'" maxlength="500"></textarea>
     <div class="char-counter">0 / 500</div>
 </div>
 
